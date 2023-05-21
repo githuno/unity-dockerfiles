@@ -14,6 +14,8 @@ RUN sed -i 's@archive.ubuntu.com@ftp.jaist.ac.jp/pub/Linux@g' /etc/apt/sources.l
 RUN export DEBIAN_FRONTEND=noninteractive \
   && apt update \
   && apt install -y --no-install-recommends \
+    # 追記
+    python3-notify2 libnotify-bin libkeybinder-3.0-dev xdg-utils dbus\
     # for timezone
     tzdata \
     # for language support
@@ -85,7 +87,9 @@ USER ${USER}
 EXPOSE 22
 
 # Switch to user's HOME folder
-WORKDIR /home/${USER}
+WORKDIR /opt/unity
+RUN ./UnityHub.AppImage --appimage-extract
+
 
 # CMD ["terminator"]
 ENTRYPOINT ["/entrypoint.bash", "terminator"]
